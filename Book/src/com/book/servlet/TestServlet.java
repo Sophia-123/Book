@@ -10,6 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 public class TestServlet extends HttpServlet {
 	@Override
 	public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("OK");
+		System.out.println("Hello");
 	}
 }

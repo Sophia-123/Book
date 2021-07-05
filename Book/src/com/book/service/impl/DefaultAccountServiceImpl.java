@@ -25,4 +25,21 @@ public class DefaultAccountServiceImpl implements AccountService {
 		return this.accountDao.findAll();
 	}
 
+	@Override
+	public void update(Account account) {
+		this.accountDao.update(account);
+		
+	}
+
+	@Override
+	public void delete(String id) {
+		this.accountDao.delete(id);
+		
+	}
+
+	@Override
+	public Account findById(String id) {
+		return this.accountDao.findById(id);
+	}
+
 }

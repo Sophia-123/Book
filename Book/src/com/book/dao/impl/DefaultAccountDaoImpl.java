@@ -22,23 +22,29 @@ public class DefaultAccountDaoImpl implements AccountDao {
 
 	@Override
 	public void update(Account entity) {
-		// TODO Auto-generated method stub
+		this.jdbcTemplate.update("update t_account set password = ? ,usertype=? where username=?",entity.getPassword(),entity.getUserType().ordinal(),entity.getUsername());
 
 	}
 
 	@Override
 	public void delete(String id) {
-		// TODO Auto-generated method stub
+		this.jdbcTemplate.update("delete from t_account where username=?", id);
 
 	}
 
 	@Override
 	public Account findById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.jdbcTemplate.queryForObject("select username,password,usertype from t_account where username = ?",new RowMapper<Account>() {
+
+			@Override
+			public Account mapRow(ResultSet rs) throws SQLException {
+				return new Account(rs.getString("username"), rs.getString("password"),
+						UserType.values()[rs.getInt("usertype")]);
+			}
+
+		},id);
 	}
 
-	@Override
 	public List<Account> findAll() {
 		return this.jdbcTemplate.query("select username,password,usertype from t_account", new RowMapper<Account>() {
 

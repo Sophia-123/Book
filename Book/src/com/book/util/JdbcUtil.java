@@ -14,6 +14,7 @@ public class JdbcUtil {
 	private static final String USERNAME;
 	private static final String PASSWORD;
 	// 用来保存一个 Connection 对象，保证同一线程保存的是同一对象，不同线程保存的是不同对象
+	//开辟了一个单独的空间
 	private static final ThreadLocal<Connection> threadLocal = new ThreadLocal<>();
 	static {
 		Properties ps = ConfigReader.read("dbconfig.properties");
@@ -29,13 +30,15 @@ public class JdbcUtil {
 	}
 
 	// 创建一个连接并返回
+	//手动提交事务
 	public static Connection getConnection() throws SQLException {
 		// 先尝试从 ThreadLocal 中获得 Connection 对象
 		Connection conn = threadLocal.get();
-		if (conn == null) {
+		//判断是否有创建过conn
+		if (conn == null) { 
 			// 如果没有，说明没有创建连接，则创建
 			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-			// 禁用自动提交事务
+			// 禁用自动提交事务，手动提交事务
 			conn.setAutoCommit(false);
 			// 将 Connection 对象放入 ThreadLocal 中，以便同一线程其他对象使用
 			threadLocal.set(conn);
